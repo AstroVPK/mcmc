@@ -22,7 +22,7 @@ int main() {
 
 // First draw from a Weibul distribution.
 int ndims = 3;
-int numPts = 1000;
+int numPts = 100000;
 unsigned int WeibullSeed = 136316322;
 unsigned int DitherSeed = 908123483;
 double k = 0.9;       // Shape parameter. k < 1 -> Slight decrease in failure rate with time.
