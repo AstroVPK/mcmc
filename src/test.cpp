@@ -12,6 +12,7 @@
 #include <mkl.h>
 #include <mkl_types.h>
 #include <iostream>
+#include <fstream>
 
 #include "Distributions.hpp"
 #include "MCMC.hpp"
@@ -22,10 +23,10 @@ int main() {
 
 // First draw from a Weibul distribution.
 int ndims = 3;
-int numPts = 100000;
+int numPts = 10000;
 unsigned int WeibullSeed = 136316322;
 unsigned int DitherSeed = 908123483;
-double k = 0.9;       // Shape parameter. k < 1 -> Slight decrease in failure rate with time.
+double k = 1.5;       // Shape parameter. k < 1 -> Slight decrease in failure rate with time.
 double disp = 0.0;    // Displacement parameter.
 double lambda = 1.0;  // Scale parameter.
 
@@ -41,7 +42,14 @@ vdRngGaussian(VSL_RNG_METHOD_GAUSSIAN_ICDF, DitherStream, ndims*numPts, ditherDa
 vslDeleteStream(&WeibullStream);
 vslDeleteStream(&DitherStream);
 
-int nwalkers = 80, nsteps = 10000, numThreads = 8;
+ofstream weibullFile;
+weibullFile.open ("weibullData.txt");
+for (size_t i = 0; i < numPts; ++i) {
+    weibullFile << weibullData.x[i] << endl;
+}
+weibullFile.close();
+
+int nwalkers = 80, nsteps = 1000, numThreads = 8;
 double mcmcA = 2.0;
 void *p2WeibullData = &weibullData;
 unsigned int zSSeed = 90238173, walkerSeed = 23166731, moveSeed = 673646293;
