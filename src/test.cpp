@@ -39,7 +39,7 @@ void doWeibull(int numPts) {
     vslDeleteStream(&WeibullStream);
     vslDeleteStream(&DitherStream);
 
-    int nwalkers = 80, nsteps = 1000, numThreads = 8;
+    int nwalkers = 264, nsteps = 1000, numThreads = 264;
     double mcmcA = 2.0;
     void *p2WeibullData = &weibullData;
     unsigned int zSSeed = 90238173, walkerSeed = 23166731, moveSeed = 673646293;
@@ -123,7 +123,7 @@ void doExponential(int numPts) {
     vslDeleteStream(&ExponentialStream);
     vslDeleteStream(&DitherStream);
 
-    int nwalkers = 80, nsteps = 1000, numThreads = 8;
+    int nwalkers = 264, nsteps = 1000, numThreads = 264;
     double mcmcA = 2.0;
     void *p2ExponentialData = &exponentialData;
     unsigned int zSSeed = 90238173, walkerSeed = 23166731, moveSeed = 673646293;
@@ -216,7 +216,7 @@ void doRayleigh(int numPts) {
     vslDeleteStream(&RayleighStream);
     vslDeleteStream(&DitherStream);
 
-    int nwalkers = 80, nsteps = 1000, numThreads = 8;
+    int nwalkers = 264, nsteps = 1000, numThreads = 264;
     double mcmcA = 2.0;
     void *p2RayleighData = &rayleighData;
     unsigned int zSSeed = 90238173, walkerSeed = 23166731, moveSeed = 673646293;
