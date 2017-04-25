@@ -4,7 +4,9 @@ import pdb
 
 
 class cpu(object):
-    def __init__(self, logical_id=0, core_id=0, physical_package_id=0, core_siblings_list=None, thread_siblings_list=None):
+    def __init__(self, logical_id=0, core_id=0, physical_package_id=0,
+                 core_siblings_list=None, thread_siblings_list=None,
+                 numa_node=0):
         self.logical_id = logical_id
         self.logical_id_doc = "Logical CPU ID of this cpu (i.e. the kernel's cpu id)."
         self.core_id = core_id
@@ -21,6 +23,8 @@ class cpu(object):
         else:
             self.thread_siblings_list = list()
         self.thread_siblings_list_doc = "Human-readable list of thsi cpu's hardware threads within the same core as this cpu."
+        self.numa_node = numa_node
+        self.numa_node_doc = "NUMA node that this CPU belongs to"
 
 class system(object):
     def __init__(self, system_path='/sys/devices/system/'):
@@ -53,12 +57,16 @@ class system(object):
         core_siblings_list = [i for i in xrange(core_siblings_start_end[0], core_siblings_start_end[-1] + 1)]
         with open(os.path.join(current_cpu_topology_path, 'thread_siblings_list'), 'rb') as fopen:
             thread_siblings_list = [int(x) for x in fopen.readline().rstrip('\n').split(',')]
-        current_cpu = cpu(logical_id, core_id, physical_package_id, core_siblings_list, thread_siblings_list)
+        current_cpu_path = os.path.join(self.cpu_path, cpu_dir)
+        dir_list = os.listdir(current_cpu_path)
+        for dir_name in dir_list:
+            matchObj = re.match(r'node\d+', dir_name)
+            if matchObj:
+                cpu_numa_node = int(dir_name[4:])
+        current_cpu = cpu(logical_id, core_id, physical_package_id, core_siblings_list, thread_siblings_list,
+                          cpu_numa_node)
         return current_cpu
 
-
-    def add_cpu(cpu_obj):
-        self.cpu.append(cpu)
 
 if __name__ == "__main__":
     my_system = system()
